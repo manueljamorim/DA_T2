@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/Manel/Documents/GitHub/Da_T2/Graph.h
+list
+-
+vector
+-
+
+/Users/Manel/Documents/GitHub/Da_T2/LoadData.cpp
+LoadData.h
+/Users/Manel/Documents/GitHub/Da_T2/LoadData.h
+
+/Users/Manel/Documents/GitHub/Da_T2/LoadData.h
+Graph.h
+/Users/Manel/Documents/GitHub/Da_T2/Graph.h
+fstream
+-
+iostream
+-
+
+/Users/Manel/Documents/GitHub/Da_T2/main.cpp
+iostream
+-
+LoadData.h
+/Users/Manel/Documents/GitHub/Da_T2/LoadData.h
+maxHeap.h
+/Users/Manel/Documents/GitHub/Da_T2/maxHeap.h
+
+/Users/Manel/Documents/GitHub/Da_T2/maxHeap.h
+vector
+-
+unordered_map
+-
+
