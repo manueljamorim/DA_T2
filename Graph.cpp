@@ -1,44 +1,23 @@
-//
-// Created by Manuel Amorim on 27/05/2022.
-//
-
-#include "Graph.h"
+#include <queue>
+#include <climits>
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include "graph.h"
 #include "minHeap.h"
 #include "maxHeap.h"
-#include <queue>
 
-// a) Distância entre dois nós
-/*
-int Graph::dijkstra_distance(int a, int b) {
-    MinHeap<int,int> heap(nodes.size(),-1);
+// Constructor: nr nodes and direction (default: undirected)
+Graph::Graph(int num, bool dir) : s(1), t(num), n(num), hasDir(dir), nodes(num+1) {}
 
-    for(int i =1;i<nodes.size();i++){
-        if(i==a){
-            nodes[a].dist = 0;
-        }else{
-            nodes[i].dist = INT32_MAX;
-        }
-        nodes[i].pred = -1;
-        heap.insert(i,nodes[i].dist);
-    }
-
-    while(heap.getSize()!=0){
-        int min = heap.removeMin();
-        for(auto edge : nodes[min].adj){
-            if(heap.hasKey(edge.dest) && nodes[min].dist+ edge.weight<nodes[edge.dest].dist){
-                nodes[edge.dest].pred = min;
-                nodes[edge.dest].dist = nodes[min].dist + edge.weight;
-                heap.decreaseKey(edge.dest,nodes[min].dist + edge.weight);
-            }
-        }
-    }
-
-    if(nodes[b].dist==INT32_MAX) return -1;
-    return nodes[b].dist;
+// Add edge from source to destination with a certain weight
+void Graph::addEdge(int src, int dest, int capacity, int duration) {
+    if (src<1 || src>n || dest<1 || dest>n) return;
+    nodes[src].adj.push_back({src, dest, capacity, duration});
+    if (!hasDir) nodes[dest].adj.push_back({dest, src, capacity, duration});
 }
-*/
 
-//1.1
+// ----------------- Task 1 Functions -------------------
 int Graph::max_capacity(int a, int b){
     MaxHeap<int,int> heap(nodes.size(),-1);
 
@@ -68,6 +47,7 @@ int Graph::max_capacity(int a, int b){
     return nodes[b].cap;
 
 }
+
 list<int> Graph::get_path(int a, int b) {
     list<int> path;
 
@@ -79,8 +59,6 @@ list<int> Graph::get_path(int a, int b) {
     }
     return path;
 }
-
-//1.2
 int Graph::min_transbordos(int a, int b){
     MinHeap<int,int> heap(nodes.size(),-1);
 
@@ -109,6 +87,7 @@ int Graph::min_transbordos(int a, int b){
     return nodes[b].dist - 1;
 
 }
+
 int Graph::max_capacity_multiple_solutions(int a, int b) {
     MaxHeap<int,int> heap(nodes.size(),-1);
 
@@ -146,7 +125,7 @@ int Graph::max_capacity_multiple_solutions(int a, int b) {
 
 
 int Graph::recursive(int a, int current){
-
+    return 0;
 }
 
 list<list<int>> Graph::get_path_multiple_solutions(int a, int b) {
@@ -156,8 +135,96 @@ list<list<int>> Graph::get_path_multiple_solutions(int a, int b) {
         nodes[i].visited = 0;
     }
 
+}
+// ------------------------------------------------------
 
+
+// ----------------- Task 2 Functions -------------------
+int Graph::getMaxFlow() {
+    solve();
+    return maxFlow;
 }
 
+void Graph::solve() {
+    int flow;
 
+    ofstream output("../Tests_B/output.txt");
 
+    do {
+        for(int v = 1; v <= n; v++) {
+            nodes[v].visited = false;
+            nodes[v].parent = INT_MAX;
+        }
+        flow = bfs(output);
+        maxFlow += flow;
+    } while(flow != 0);
+    
+    output.close();
+}
+
+int Graph::remainingCapacity(Edge e) {
+    return e.capacity - e.flow;
+}
+
+bool Graph::isResidual(Edge e) {
+    return e.capacity == 0;
+}
+
+void Graph::augmentEdge(Edge& e, int limit) {
+    e.flow += limit;
+}
+
+int Graph::bfs(ofstream& output) {
+    queue<int> q;
+    q.push(s);
+    nodes[s].visited = true;
+    while(!q.empty()) {
+        int u = q.front();
+        q.pop();
+        if(u == t) break;
+        for(Edge& e : nodes[u].adj) {
+            int w = e.dest;
+            if(remainingCapacity(e) > 0 && !nodes[w].visited) {
+                nodes[w].visited = true;
+                nodes[w].parent = u;
+                q.push(w);
+            }
+        }
+    }
+
+    if(!nodes[t].visited) return 0;
+
+    // Retrieve path nodes and edges traversed and write to output file
+    vector<Edge> edge_path;
+    int num_nodes = 1;
+    for(int i = t; i != s; i = nodes[i].parent) {
+        num_nodes++;
+    }
+    output << num_nodes << " " << num_nodes - 1 << endl;
+
+    for(int i = t; i != s; i = nodes[i].parent) {
+        for(Edge e : nodes[nodes[i].parent].adj) {
+            if(e.dest == i) {
+                edge_path.push_back(e);
+                output << e.src << " " << e.dest << " " << e.capacity << " " << e.duration << endl;
+            }
+        }
+    }
+    output << endl;
+
+    int limit = INT_MAX / 2;
+    for(Edge edge : edge_path) {
+        limit = min(limit, remainingCapacity(edge));
+    }
+
+    for(Edge edge : edge_path) {
+        augmentEdge(edge, limit);
+        for(int i = 0; i < nodes[edge.src].adj.size(); i++) {
+            if(nodes[edge.src].adj[i].src == edge.src && nodes[edge.src].adj[i].dest == edge.dest)
+                nodes[edge.src].adj[i] = edge;
+        }
+    }
+    
+    return limit;
+}
+// ------------------------------------------------------

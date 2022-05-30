@@ -1,41 +1,72 @@
-#ifndef DA_T2_GRAPH_H
-#define DA_T2_GRAPH_H
-
-using namespace std;
 #include <list>
 #include <vector>
 
-class Graph {
-public:
-    struct Edge {
-        int dest;   // Destination node
-        int capacity;
-        int duration;
-    };
-    struct Node {
-        list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
+using namespace std;
 
-        bool visited;   // Has the node been visited on a search?
+class Graph {
+private:
+    struct Edge {
+        int src; // Source node
+        int dest; // Destination node
+        int capacity; // Capacity of the vehicle
+        int duration; // Duration of the travel
+        int flow = 0; // Flow going through the edge
+    };
+
+    struct Node {
+        int parent; // The parent node
+        vector<Edge> adj; // The list of outgoing vehicles (to adjacent places)
+        bool visited; // Has the place been visited on a search?
         int pred;
         int dist;
         int cap;
-
         vector<int> pred_v;
     };
 
-    int n;              // Graph size (vertices are numbered from 1 to n)
-    vector<Node> nodes;
+    int n; // Graph size (vertices are numbered from 1 to n)
+    int s, t; // Source node and destination/sink node
+    bool hasDir; // false: undirect; true: directed
+    vector<Node> nodes; // The list of nodes being represented
+    
+    bool solved = false; // Indicate whether the algorithm has ran. The result in successive runs will always be the same
+    int maxFlow = 0; // Maximum flow. Calculated by calling the solve method
+
+public:
+    // Constructor: nr nodes and direction (default: undirected)
+    Graph(int nodes, bool dir = false);
+
+    // Add edge from source to destination with a certain weight
+    void addEdge(int src, int dest, int capacity, int duration);
 
 
+// ----------------- Task 1 Functions -------------------
     list<int> get_path(int a, int b);
+
     int max_capacity(int a, int b);
+
     int min_transbordos(int a, int b);
 
     int max_capacity_multiple_solutions(int a, int b);
+
     list<list<int>> get_path_multiple_solutions(int a, int b);
 
     int recursive(int a, int current);
+// ------------------------------------------------------
+
+
+// ----------------- Task 2 Functions -------------------
+    int getMaxFlow();
+
+    int bfs(ofstream& output);
+
+    int remainingCapacity(Edge e);
+    
+    bool isResidual(Edge e);
+
+    void augmentEdge(Edge& e, int limit);
+
+    void execute();
+
+    void solve();
+// ------------------------------------------------------
 };
-
-
-#endif //DA_T2_GRAPH_H
