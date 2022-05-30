@@ -5,7 +5,7 @@
 #include <string>
 #include <limits>
 
-#include "utils.h"
+#include "graph.h"
 
 Graph graph_selection_menu(vector<Graph> graphs) {
     int input;
@@ -69,7 +69,7 @@ void task2_menu(Graph graph) {
     case '2':
         break;
     case '3':
-        cout << "Max group size: " << graph.getMaxFlow() << endl;
+        graph.getMaxFlow();
         break;
     case '4':
         break;
@@ -91,7 +91,7 @@ int main() {
         filename << setfill('0') << setw(2) << i;
         graphs.push_back(createGraphFromFile("../Tests_B/in" + filename.str() + "_b.txt"));
     }
-
+    graphs.push_back(createGraphFromFile("../Tests_B/intSlide1.txt"));
     char input;
     do {
         cout << "Choose which task to run (1 or 2, 0 to exit): ";

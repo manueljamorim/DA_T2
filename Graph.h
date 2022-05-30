@@ -10,7 +10,7 @@ private:
         int dest; // Destination node
         int capacity; // Capacity of the vehicle
         int duration; // Duration of the travel
-        int flow = 0; // Flow going through the edge
+        int flow; // Flow going through the edge
     };
 
     struct Node {
@@ -36,7 +36,7 @@ public:
     Graph(int nodes, bool dir = false);
 
     // Add edge from source to destination with a certain weight
-    void addEdge(int src, int dest, int capacity, int duration);
+    void addEdge(int src, int dest, int capacity, int duration, int flow = 0, bool fromOutput = false);
 
 
 // ----------------- Task 1 Functions -------------------
@@ -68,5 +68,13 @@ public:
     void execute();
 
     void solve();
+
+    void printOutput();
+
 // ------------------------------------------------------
 };
+
+// Creates a graph from a given input file
+Graph createGraphFromFile(string filename);
+
+Graph createGraphFromOutput();

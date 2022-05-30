@@ -3,6 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include "graph.h"
 #include "minHeap.h"
 #include "maxHeap.h"
@@ -10,11 +11,81 @@
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : s(1), t(num), n(num), hasDir(dir), nodes(num+1) {}
 
+Graph createGraphFromFile(string filename) {
+    string line;
+
+    ifstream file(filename);
+
+    if(!file.is_open()) {
+        cerr << "Unable to open file" << endl;
+    }
+
+    int n_nodes, n_edges;
+    getline(file, line);
+    istringstream(line) >> n_nodes >> n_edges;
+
+    Graph graph = Graph(n_nodes, true);
+
+    int src, dest, cap, flow, dur;
+    for(int i = 0; i < n_edges; i++) {
+        getline(file, line);
+        istringstream(line) >> src >> dest >> cap >> dur;
+        graph.addEdge(src, dest, cap, dur);
+        //graph.addEdge(dest, src, 0, dur); Residual edge
+    }
+
+
+    file.close();
+
+    return graph;
+}
+
+Graph createGraphFromOutput() {
+    string line;
+
+    ifstream file("../Tests_B/output.txt");
+
+    if(!file.is_open()) {
+        cerr << "Unable to open file" << endl;
+    }
+    
+    int n_nodes, n_edges;
+    getline(file, line);
+    istringstream(line) >> n_nodes >> n_edges;
+    Graph graph = Graph(n_nodes, true);
+
+    while(!file.eof()) {
+        int src, dest, flow, dur;
+        for(int i = 0; i < n_edges; i++) {
+            getline(file, line);
+            istringstream(line) >> src >> dest >> flow >> dur;
+            graph.addEdge(src, dest, 0, dur, flow, true);
+        }
+
+        getline(file, line);
+        istringstream(line) >> n_nodes >> n_edges;
+    }
+    file.close();
+
+    return graph;
+}
+
 // Add edge from source to destination with a certain weight
-void Graph::addEdge(int src, int dest, int capacity, int duration) {
+void Graph::addEdge(int src, int dest, int capacity, int duration, int flow, bool fromOutput) {
     if (src<1 || src>n || dest<1 || dest>n) return;
-    nodes[src].adj.push_back({src, dest, capacity, duration});
-    if (!hasDir) nodes[dest].adj.push_back({dest, src, capacity, duration});
+    if(fromOutput) {
+        for(Edge& edge : this->nodes[src].adj) {
+            if(edge.src == src && edge.dest == dest) {
+                edge.flow = flow;
+                return;
+            }
+        } 
+    } 
+
+    this->nodes[src].adj.push_back({src, dest, capacity, duration, flow});
+    if (!hasDir) this->nodes[dest].adj.push_back({dest, src, capacity, duration, flow});
+
+
 }
 
 // ----------------- Task 1 Functions -------------------
@@ -142,6 +213,7 @@ list<list<int>> Graph::get_path_multiple_solutions(int a, int b) {
 // ----------------- Task 2 Functions -------------------
 int Graph::getMaxFlow() {
     solve();
+    printOutput();
     return maxFlow;
 }
 
@@ -200,17 +272,14 @@ int Graph::bfs(ofstream& output) {
     for(int i = t; i != s; i = nodes[i].parent) {
         num_nodes++;
     }
-    output << num_nodes << " " << num_nodes - 1 << endl;
 
     for(int i = t; i != s; i = nodes[i].parent) {
         for(Edge e : nodes[nodes[i].parent].adj) {
             if(e.dest == i) {
                 edge_path.push_back(e);
-                output << e.src << " " << e.dest << " " << e.capacity << " " << e.duration << endl;
             }
         }
     }
-    output << endl;
 
     int limit = INT_MAX / 2;
     for(Edge edge : edge_path) {
@@ -224,7 +293,45 @@ int Graph::bfs(ofstream& output) {
                 nodes[edge.src].adj[i] = edge;
         }
     }
+
     
+    output << t << " " << num_nodes - 1 << endl;
+    for(int i = t; i != s; i = nodes[i].parent) {
+        for(Edge e : nodes[nodes[i].parent].adj) {
+            if(e.dest == i) {
+                output << e.src << " " << e.dest << " " << e.flow << " " << e.duration << endl;
+            }
+        }
+    }
+
     return limit;
+}
+
+void Graph::printOutput() {
+    Graph graph = createGraphFromOutput();
+
+    for(int v = 1; v <= graph.n; v++) graph.nodes[v].visited = false;
+
+    queue<int> q;
+    q.push(graph.s);
+    nodes[graph.s].visited = true;
+    
+    for(Edge e : graph.nodes[1].adj)
+        cout << e.src << " to node " << e.dest << endl;
+
+    cout << "Starting from node 1 with a group of " << maxFlow << endl;
+    while(!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for(Edge& e : graph.nodes[u].adj) {
+            int w = e.dest;
+            if(!graph.nodes[w].visited) {
+                graph.nodes[w].visited = true;
+                q.push(w);
+            }
+            cout << "\tA group of "<< e.flow << " move from node " << e.src << " to node " << e.dest << endl;
+        }
+    }
+    cout << "Finishing in node " << graph.t << " with a group of " << maxFlow << endl;
 }
 // ------------------------------------------------------
