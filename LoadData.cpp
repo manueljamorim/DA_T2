@@ -5,7 +5,8 @@ using namespace std;
 void LoadData::load(){
 
     string textLine;
-    ifstream MyReadFile("/Users/Manel/Documents/GitHub/Da_T2/Tests/intSlide.txt");
+
+    ifstream MyReadFile("../Tests/in01.txt");
 
     if(!MyReadFile.is_open()) {
         cout << "ERRO";
