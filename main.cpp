@@ -7,6 +7,27 @@
 
 #include "graph.h"
 
+enum taskChoice {SIZE, INCREMENT};
+
+int number_selection_menu(taskChoice choice) {
+    int input;
+
+    switch(choice) {
+        case SIZE:
+            cout << "Input a group size: ";
+            break;
+        case INCREMENT:
+            cout << "Input the increase in group size: ";
+            break;
+    }
+
+    cin >> input;
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    return input;
+}
+
 Graph graph_selection_menu(vector<Graph> graphs) {
     int input;
 
@@ -65,6 +86,7 @@ void task2_menu(Graph graph) {
     case '0':
         return;
     case '1':
+        graph.calculatePathForGroup(number_selection_menu(SIZE));
         break;
     case '2':
         break;

@@ -55,9 +55,16 @@ public:
 
 
 // ----------------- Task 2 Functions -------------------
+    // 2.1
+    void calculatePathForGroup(int size);
+
+    // 2.2
+    void calculatePathsForGroupIncrease(int startSize, int increment);
+    
+    // 2.3
     int getMaxFlow();
 
-    int bfs(ofstream& output);
+    int bfs(ofstream& output, int& maxSize);
 
     int remainingCapacity(Edge e);
     
@@ -67,7 +74,7 @@ public:
 
     void execute();
 
-    void solve();
+    bool solve(int maxSize = INT_MAX);
 
     void printOutput();
 

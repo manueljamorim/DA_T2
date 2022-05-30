@@ -211,15 +211,25 @@ list<list<int>> Graph::get_path_multiple_solutions(int a, int b) {
 
 
 // ----------------- Task 2 Functions -------------------
+void Graph::calculatePathForGroup(int size) {
+    bool result = solve(size);
+    if(result)
+        printOutput();
+    else
+        cout << "There's no possible path for a group of size " << size << endl;
+}
+
+void Graph::calculatePathsForGroupIncrease(int startSize, int increment) {
+
+}
+
 int Graph::getMaxFlow() {
     solve();
     printOutput();
     return maxFlow;
 }
-
-void Graph::solve() {
+bool Graph::solve(int maxSize) {
     int flow;
-
     ofstream output("../Tests_B/output.txt");
 
     do {
@@ -227,11 +237,16 @@ void Graph::solve() {
             nodes[v].visited = false;
             nodes[v].parent = INT_MAX;
         }
-        flow = bfs(output);
+        flow = bfs(output, maxSize);
         maxFlow += flow;
-    } while(flow != 0);
-    
+    } while(flow != 0 && maxSize > 0);
+
     output.close();
+
+    if(maxSize > 0)
+        return false;
+
+    return true;
 }
 
 int Graph::remainingCapacity(Edge e) {
@@ -246,7 +261,7 @@ void Graph::augmentEdge(Edge& e, int limit) {
     e.flow += limit;
 }
 
-int Graph::bfs(ofstream& output) {
+int Graph::bfs(ofstream& output, int& maxSize) {
     queue<int> q;
     q.push(s);
     nodes[s].visited = true;
@@ -286,6 +301,15 @@ int Graph::bfs(ofstream& output) {
         limit = min(limit, remainingCapacity(edge));
     }
 
+    if(maxSize != INT_MAX) {
+        if(limit >= maxSize)
+            limit = maxSize;
+
+        maxSize -= limit;
+        if(maxSize < 0)
+            maxSize = 0;
+    }
+
     for(Edge edge : edge_path) {
         augmentEdge(edge, limit);
         for(int i = 0; i < nodes[edge.src].adj.size(); i++) {
@@ -315,9 +339,6 @@ void Graph::printOutput() {
     queue<int> q;
     q.push(graph.s);
     nodes[graph.s].visited = true;
-    
-    for(Edge e : graph.nodes[1].adj)
-        cout << e.src << " to node " << e.dest << endl;
 
     cout << "Starting from node 1 with a group of " << maxFlow << endl;
     while(!q.empty()) {
