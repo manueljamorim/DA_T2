@@ -130,6 +130,7 @@ list<int> Graph::get_path(int a, int b) {
     }
     return path;
 }
+
 int Graph::min_transbordos(int a, int b){
     MinHeap<int,int> heap(nodes.size(),-1);
 
@@ -211,23 +212,43 @@ list<list<int>> Graph::get_path_multiple_solutions(int a, int b) {
 
 
 // ----------------- Task 2 Functions -------------------
-void Graph::calculatePathForGroup(int size) {
+bool Graph::calculatePathForGroup(int size) {
     bool result = solve(size);
-    if(result)
-        printOutput();
-    else
+    if(!result)
         cout << "There's no possible path for a group of size " << size << endl;
+
+    return result;
 }
 
-void Graph::calculatePathsForGroupIncrease(int startSize, int increment) {
+void Graph::calculatePathsForGroupIncrease(int increment, int startSize) {
+    bool result = calculatePathForGroup(startSize);
+    if(!result)
+        return;
+    printOutput();
+    Graph resultGraph1 = createGraphFromOutput();
 
+    this->maxFlow = 0;
+    for(int v = 1; v <= n; v++) {
+        for(Edge& e : nodes[v].adj)
+        e.flow = 0;
+    }
+    
+    result = calculatePathForGroup(startSize + increment);
+    if(!result)
+        return;
+    printOutput();
+    Graph resultGraph2 = createGraphFromOutput();
+
+    printChanges(resultGraph1, resultGraph2);
 }
 
 int Graph::getMaxFlow() {
     solve();
+    cout << "Maximum group size is: " << maxFlow << endl;
     printOutput();
     return maxFlow;
 }
+
 bool Graph::solve(int maxSize) {
     int flow;
     ofstream output("../Tests_B/output.txt");
@@ -354,5 +375,39 @@ void Graph::printOutput() {
         }
     }
     cout << "Finishing in node " << graph.t << " with a group of " << maxFlow << endl;
+}
+
+void Graph::printChanges(Graph graph1, Graph graph2) {
+    queue<int> q;
+    q.push(graph2.s);
+    nodes[graph2.s].visited = true;
+
+    bool matched = false;
+    while(!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for(Edge& e2 : graph2.nodes[u].adj) {
+            for(Edge& e1 : graph1.nodes[u].adj) {
+                if(e1.src == e2.src && e1.dest == e2.dest) {
+                    matched = true;
+                    if(e1.flow == e2.flow) {
+                        cout << "Unchanged  -- " << "Node " << e1.src << " to " << e1.dest << " group size " << e1.flow << endl;
+                    }
+                    else {
+                        cout << "Changed    -- " << "Node " << e1.src << " to " << e1.dest << " group size changed from " << e1.flow << " to " << e2.flow << endl;
+                    }
+                }
+            }
+            if(!matched)
+                cout << "Added      -- " << "Node " << e2.src << " to " << e2.dest << " group size " << e2.flow << endl;
+            matched = false;
+
+            int w = e2.dest;
+            if(!graph2.nodes[w].visited) {
+                graph2.nodes[w].visited = true;
+                q.push(w);
+            }
+        }
+    }
 }
 // ------------------------------------------------------

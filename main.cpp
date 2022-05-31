@@ -7,9 +7,9 @@
 
 #include "graph.h"
 
-enum taskChoice {SIZE, INCREMENT};
+enum numberSelection {SIZE, INCREMENT};
 
-int number_selection_menu(taskChoice choice) {
+int number_selection_menu(numberSelection choice) {
     int input;
 
     switch(choice) {
@@ -87,8 +87,10 @@ void task2_menu(Graph graph) {
         return;
     case '1':
         graph.calculatePathForGroup(number_selection_menu(SIZE));
+        graph.printOutput();
         break;
     case '2':
+        graph.calculatePathsForGroupIncrease(number_selection_menu(INCREMENT), number_selection_menu(SIZE));
         break;
     case '3':
         graph.getMaxFlow();

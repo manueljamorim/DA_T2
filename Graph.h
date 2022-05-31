@@ -34,7 +34,6 @@ private:
 public:
     // Constructor: nr nodes and direction (default: undirected)
     Graph(int nodes, bool dir = false);
-
     // Add edge from source to destination with a certain weight
     void addEdge(int src, int dest, int capacity, int duration, int flow = 0, bool fromOutput = false);
 
@@ -56,11 +55,12 @@ public:
 
 // ----------------- Task 2 Functions -------------------
     // 2.1
-    void calculatePathForGroup(int size);
+    bool calculatePathForGroup(int size);
 
     // 2.2
-    void calculatePathsForGroupIncrease(int startSize, int increment);
-    
+    void calculatePathsForGroupIncrease(int increment, int startSize);
+    void printChanges(Graph graph1, Graph graph2);
+
     // 2.3
     int getMaxFlow();
 
