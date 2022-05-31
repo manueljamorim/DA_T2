@@ -1,33 +1,45 @@
-#ifndef DA_T2_GRAPH_H
-#define DA_T2_GRAPH_H
-
-using namespace std;
 #include <list>
 #include <vector>
 #include <set>
 
-class Graph {
-public:
-    struct Edge {
-        int dest;   // Destination node
-        int capacity;
-        int duration;
-    };
-    struct Node {
-        list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
+using namespace std;
 
-        bool visited;   // Has the node been visited on a search?
+class Graph {
+private:
+    struct Edge {
+        int src; // Source node
+        int dest; // Destination node
+        int capacity; // Capacity of the vehicle
+        int duration; // Duration of the travel
+        int flow; // Flow going through the edge
+    };
+
+    struct Node {
+        int parent; // The parent node
+        vector<Edge> adj; // The list of outgoing vehicles (to adjacent places)
+        bool visited; // Has the place been visited on a search?
         int pred;
         int dist;
         int cap;
-
         vector<int> pred_v;
     };
 
-    int n;              // Graph size (vertices are numbered from 1 to n)
-    vector<Node> nodes;
+    int n; // Graph size (vertices are numbered from 1 to n)
+    int s, t; // Source node and destination/sink node
+    bool hasDir; // false: undirect; true: directed
+    vector<Node> nodes; // The list of nodes being represented
+    
+    bool solved = false; // Indicate whether the algorithm has ran. The result in successive runs will always be the same
+    int maxFlow = 0; // Maximum flow. Calculated by calling the solve method
+
+public:
+    // Constructor: nr nodes and direction (default: undirected)
+    Graph(int nodes, bool dir = false);
+    // Add edge from source to destination with a certain weight
+    void addEdge(int src, int dest, int capacity, int duration, int flow = 0, bool fromOutput = false);
 
 
+// ----------------- Task 1 Functions -------------------
     vector<int> get_path(int a, int b);
     int max_capacity(int a, int b);
     int min_transbordos_multiple_solutions(int a, int b);
@@ -40,7 +52,39 @@ public:
 
     int calc_capacity(vector<int> a);
     bool compare_capacity(const vector<int> &a, const vector<int> &b);
+
+// ------------------------------------------------------
+
+
+// ----------------- Task 2 Functions -------------------
+    // 2.1
+    bool calculatePathForGroup(int size);
+
+    // 2.2
+    void calculatePathsForGroupIncrease(int increment, int startSize);
+    void printChanges(Graph graph1, Graph graph2);
+
+    // 2.3
+    int getMaxFlow();
+
+    int bfs(ofstream& output, int& maxSize);
+
+    int remainingCapacity(Edge e);
+    
+    bool isResidual(Edge e);
+
+    void augmentEdge(Edge& e, int limit);
+
+    void execute();
+
+    bool solve(int maxSize = INT_MAX);
+
+    void printOutput();
+
+// ------------------------------------------------------
 };
 
+// Creates a graph from a given input file
+Graph createGraphFromFile(string filename);
 
-#endif //DA_T2_GRAPH_H
+Graph createGraphFromOutput();
