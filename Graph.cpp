@@ -4,9 +4,12 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include "graph.h"
+#include "Graph.h"
 #include "minHeap.h"
 #include "maxHeap.h"
+#include <stack>
+
+
 
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : s(1), t(num), n(num), hasDir(dir), nodes(num+1) {}
@@ -245,7 +248,7 @@ void Graph::calculatePathsForGroupIncrease(int increment, int startSize) {
 int Graph::getMaxFlow() {
     solve();
     cout << "Maximum group size is: " << maxFlow << endl;
-    printOutput();
+
     return maxFlow;
 }
 
@@ -410,4 +413,90 @@ void Graph::printChanges(Graph graph1, Graph graph2) {
         }
     }
 }
+// ------------------------------------------------------
+// ----------------- Task 3 Functions -------------------
+
+double Graph::task2_4solver(){
+
+    double res=0;
+    int DurMin;
+
+    getMaxFlow();
+
+    Graph aux_g = createGraphFromOutput();
+
+    stack<int> S;
+
+    for(int i = 0 ; i < aux_g.n; i++){
+        aux_g.nodes[i].es = 0;
+        aux_g.nodes[i].parent = -1;
+        aux_g.nodes[i].grauE = 0;
+    }
+
+
+
+    for(int i = 0 ; i < aux_g.n; i++) {
+        for (int k = 0; k < aux_g.nodes[i].adj.size(); k++) {
+            aux_g.nodes[nodes[i].adj[k].dest].grauE = aux_g.nodes[nodes[i].adj[k].dest].grauE + 1;
+        }
+    }
+
+    for(int i=0; i < aux_g.n ; i++){
+        if(aux_g.nodes[i].grauE == 0){S.push(i);}
+    }
+    DurMin = -1;
+    int vf = -1; //null
+    int v;
+
+
+    while(S.size() != 0){
+        v = S.top();
+        S.pop();
+            if( DurMin < aux_g.nodes[v].es){
+                DurMin = aux_g.nodes[v].es;
+                vf = v;
+            }
+
+        for(Edge& e : aux_g.nodes[v].adj) {
+            int w = e.dest;
+            if(aux_g.nodes[w].es < (aux_g.nodes[v].es + e.duration)){
+                aux_g.nodes[w].es = aux_g.nodes[v].es + e.duration;
+                aux_g.nodes[w].parent = v;
+            }
+
+            aux_g.nodes[w].grauE = aux_g.nodes[w].grauE - 1;
+            if(aux_g.nodes[w].grauE == 0){S.push(w);}
+        }
+    }
+    cout << DurMin;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ------------------------------------------------------

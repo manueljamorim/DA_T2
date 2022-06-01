@@ -5,7 +5,7 @@
 #include <string>
 #include <limits>
 
-#include "graph.h"
+#include "Graph.h"
 
 enum numberSelection {SIZE, INCREMENT};
 
@@ -94,8 +94,10 @@ void task2_menu(Graph graph) {
         break;
     case '3':
         graph.getMaxFlow();
+        graph.printOutput();
         break;
     case '4':
+        graph.task2_4solver();
         break;
     case '5':
         break;

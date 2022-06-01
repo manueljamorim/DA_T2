@@ -1,6 +1,7 @@
 #include <list>
 #include <vector>
 
+
 using namespace std;
 
 class Graph {
@@ -20,6 +21,8 @@ private:
         int pred;
         int dist;
         int cap;
+        int es; //earliest start
+        int grauE;
         vector<int> pred_v;
     };
 
@@ -62,7 +65,7 @@ public:
     void printChanges(Graph graph1, Graph graph2);
 
     // 2.3
-    int getMaxFlow();
+    int getMaxFlow(); // grafo para file
 
     int bfs(ofstream& output, int& maxSize);
 
@@ -79,9 +82,18 @@ public:
     void printOutput();
 
 // ------------------------------------------------------
+
+//-------------Task 2+ Functions--------------------------
+//2.4
+
+
+    double task2_4solver();
 };
+
+
 
 // Creates a graph from a given input file
 Graph createGraphFromFile(string filename);
 
-Graph createGraphFromOutput();
+Graph createGraphFromOutput(); // este
+
