@@ -31,7 +31,7 @@ Graph createGraphFromFile(string filename) {
         getline(file, line);
         istringstream(line) >> src >> dest >> cap >> dur;
         graph.addEdge(src, dest, cap, dur);
-        //graph.addEdge(dest, src, 0, dur); Residual edge
+        graph.addEdge(dest, src, 0, dur);  //Residual edge
     }
 
 
@@ -79,7 +79,13 @@ void Graph::addEdge(int src, int dest, int capacity, int duration, int flow, boo
                 edge.flow = flow;
                 return;
             }
-        } 
+        }
+        for(Edge& edge : this->nodes[dest].adj) {
+            if(edge.dest == src && edge.src == dest) {
+                edge.flow = -flow;
+                return;
+            }   
+        }
     } 
 
     this->nodes[src].adj.push_back({src, dest, capacity, duration, flow});
@@ -337,6 +343,13 @@ int Graph::bfs(ofstream& output, int& maxSize) {
             if(nodes[edge.src].adj[i].src == edge.src && nodes[edge.src].adj[i].dest == edge.dest)
                 nodes[edge.src].adj[i] = edge;
         }
+        
+        for(int i = 0; i < nodes[edge.dest].adj.size(); i++) {
+            if(nodes[edge.dest].adj[i].src == edge.dest && nodes[edge.dest].adj[i].dest == edge.src) {
+                augmentEdge(nodes[edge.dest].adj[i], -limit);
+            }
+        }
+
     }
 
     
