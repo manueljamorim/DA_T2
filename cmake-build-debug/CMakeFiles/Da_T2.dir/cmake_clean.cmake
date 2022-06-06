@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Da_T2.dir/Graph.cpp.o"
-  "CMakeFiles/Da_T2.dir/LoadData.cpp.o"
+  "CMakeFiles/Da_T2.dir/graph.cpp.o"
   "CMakeFiles/Da_T2.dir/main.cpp.o"
   "Da_T2"
   "Da_T2.pdb"

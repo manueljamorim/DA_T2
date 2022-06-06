@@ -24,7 +24,12 @@ private:
         vector<int> pred_v;
     };
 
-    int n; // Graph size (vertices are numbered from 1 to n)
+    int n;
+public:
+    int getN() const;
+
+private:
+    // Graph size (vertices are numbered from 1 to n)
     int s, t; // Source node and destination/sink node
     bool hasDir; // false: undirect; true: directed
     vector<Node> nodes; // The list of nodes being represented

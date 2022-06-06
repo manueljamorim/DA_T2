@@ -143,59 +143,32 @@ Da_T2/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/build
 .PHONY : Da_T2/fast
 
-Graph.o: Graph.cpp.o
+graph.o: graph.cpp.o
 
-.PHONY : Graph.o
-
-# target to build an object file
-Graph.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/Graph.cpp.o
-.PHONY : Graph.cpp.o
-
-Graph.i: Graph.cpp.i
-
-.PHONY : Graph.i
-
-# target to preprocess a source file
-Graph.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/Graph.cpp.i
-.PHONY : Graph.cpp.i
-
-Graph.s: Graph.cpp.s
-
-.PHONY : Graph.s
-
-# target to generate assembly for a file
-Graph.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/Graph.cpp.s
-.PHONY : Graph.cpp.s
-
-LoadData.o: LoadData.cpp.o
-
-.PHONY : LoadData.o
+.PHONY : graph.o
 
 # target to build an object file
-LoadData.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/LoadData.cpp.o
-.PHONY : LoadData.cpp.o
+graph.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/graph.cpp.o
+.PHONY : graph.cpp.o
 
-LoadData.i: LoadData.cpp.i
+graph.i: graph.cpp.i
 
-.PHONY : LoadData.i
+.PHONY : graph.i
 
 # target to preprocess a source file
-LoadData.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/LoadData.cpp.i
-.PHONY : LoadData.cpp.i
+graph.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/graph.cpp.i
+.PHONY : graph.cpp.i
 
-LoadData.s: LoadData.cpp.s
+graph.s: graph.cpp.s
 
-.PHONY : LoadData.s
+.PHONY : graph.s
 
 # target to generate assembly for a file
-LoadData.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/LoadData.cpp.s
-.PHONY : LoadData.cpp.s
+graph.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Da_T2.dir/build.make CMakeFiles/Da_T2.dir/graph.cpp.s
+.PHONY : graph.cpp.s
 
 main.o: main.cpp.o
 
@@ -233,12 +206,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Da_T2"
-	@echo "... Graph.o"
-	@echo "... Graph.i"
-	@echo "... Graph.s"
-	@echo "... LoadData.o"
-	@echo "... LoadData.i"
-	@echo "... LoadData.s"
+	@echo "... graph.o"
+	@echo "... graph.i"
+	@echo "... graph.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

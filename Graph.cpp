@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include "graph.h"
+#include "Graph.h"
 #include "minHeap.h"
 #include "maxHeap.h"
 
@@ -120,7 +120,6 @@ int Graph::max_capacity(int a, int b){
 
 }
 
-
 vector<int> Graph::get_path(int a, int b) {
     vector<int> path;
 
@@ -209,6 +208,10 @@ void Graph::recursive(int a, int b, vector<int> path, vector<vector<int>>& resul
     if(b==a){
         path.insert(path.begin(),b);
         result.push_back(path);
+
+        cout << "novo_caminho-" << result.size()-1 << "  C:"  << calc_capacity(path)  << " T: "<< path.size()-1 << endl;
+
+
         return;
     }else{
         path.insert(path.begin(),b);
@@ -218,6 +221,8 @@ void Graph::recursive(int a, int b, vector<int> path, vector<vector<int>>& resul
         return;
     }
 }
+
+
 vector<vector<int>> Graph::get_path_multiple_solutions(int a, int b) {
     vector<vector<int>> paths;
     vector<int> path;
@@ -488,6 +493,10 @@ void Graph::printChanges(Graph graph1, Graph graph2) {
             }
         }
     }
+}
+
+int Graph::getN() const {
+    return n;
 }
 // ------------------------------------------------------
 

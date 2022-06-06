@@ -5,57 +5,73 @@
 #include <string>
 #include <limits>
 
-#include "graph.h"
+#include "Graph.h"
 
-void manel(){
-    cout << "\n1.1 Max capacidade:" << ld.graph.max_capacity(1,s);
-    vector<int> lista = ld.graph.get_path(1,s);
+void max_capacity(Graph graph){
+    int s = graph.getN();
+    cout << "\n1.1 Max capacidade: " << graph.max_capacity(1,s);
+    vector<int> lista = graph.get_path(1,s);
     cout << "\nPath: ";
-    for(int value: lista){
-        cout << value << " ";
-    }
-
-    cout << "\n Min transbordos:" << ld.graph.min_transbordos_multiple_solutions(1,s);
-    vector<vector<int>> vetor = ld.graph.get_path_multiple_solutions(1,s);
-
-    for(auto& sol: vetor){
-        cout << "\nPath: ";
-        for(auto& nodo: sol){
-            cout << nodo << " ";
+    for(int i=0; i<lista.size() ;i++){
+        cout << lista[i];
+        if(i!=lista.size()-1){
+            cout << "-->";
         }
     }
+    cout << "\n\n";
+}
+void max_capacity_min_transbordo(Graph graph){
+    int s = graph.getN();
 
-    cout << "\n Max capacidade multiple solutions:" << ld.graph.max_capacity_multiple_solutions(1,s);
-    vetor =  ld.graph.get_path_multiple_solutions(1,s);
-
-    for(auto& sol: vetor){
-        cout << "\nPath: ";
-        for(auto& nodo: sol){
-            cout << nodo << " ";
-        }
-    }
-
-    cout << "\n1.2 Max capacidade & min transbordos solution:";
-    set<vector<int>> sol_set = ld.graph.multi_objective_solutions(1,s);
+    cout << "\n1.2 Max capacidade & min transbordos solution: ";
+    set<vector<int>> sol_set = graph.multi_objective_solutions(1,s);
     for(auto& sol: sol_set){
         cout << "\nPath: ";
 
-        int cap = ld.graph.calc_capacity(sol);
+        int cap = graph.calc_capacity(sol);
         int trans = sol.size()-1;
 
+        for(int i=0; i<sol.size() ;i++){
+            cout << sol[i];
+            if(i!=sol.size()-1){
+                cout << "-->";
+            }
+        }
+
+        cout << "\t\t Cap: " << cap << "  Trans: " << trans;
+    }
+    cout << "\n\n";
+}
+
+/*
+void teste(Graph graph){
+    int s = graph.getN();
+
+
+    cout << "\n Min transbordos:" << graph.min_transbordos_multiple_solutions(1,s);
+    vector<vector<int>> vetor = graph.get_path_multiple_solutions(1,s);
+
+    for(auto& sol: vetor){
+        cout << "\nPath: ";
         for(auto& nodo: sol){
             cout << nodo << " ";
         }
-
-        cout << "\t Cap: " << cap << "  Trans: " << trans;
     }
 
+    cout << "\n Max capacidade multiple solutions:" << graph.max_capacity_multiple_solutions(1,s);
+    vetor =  graph.get_path_multiple_solutions(1,s);
 
-
+    for(auto& sol: vetor){
+        cout << "\nPath: ";
+        for(auto& nodo: sol){
+            cout << nodo << " ";
+        }
+    }
 
 
 
 }
+*/
 
 enum numberSelection {SIZE, INCREMENT};
 
@@ -106,8 +122,10 @@ void task1_menu(Graph graph) {
     case '0':
         return;
     case '1':
+        max_capacity(graph);
         break;
     case '2':
+        max_capacity_min_transbordo(graph);
         break;
     default:
         cout << "Invalid input" << endl;
@@ -133,28 +151,42 @@ void task2_menu(Graph graph) {
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     switch (input) {
-    case '0':
-        return;
-    case '1':
-        graph.calculatePathForGroup(number_selection_menu(SIZE));
-        graph.printOutput();
-        break;
-    case '2':
-        graph.calculatePathsForGroupIncrease(number_selection_menu(INCREMENT), number_selection_menu(SIZE));
-        break;
-    case '3':
-        graph.getMaxFlow();
-        break;
-    case '4':
-        break;
-    case '5':
-        break;
-    default:
-        cout << "Invalid input" << endl;
-        break;
-    return;
+        case '0':
+            return;
+        case '1':
+            graph.calculatePathForGroup(number_selection_menu(SIZE));
+            graph.printOutput();
+            break;
+        case '2':
+            graph.calculatePathsForGroupIncrease(number_selection_menu(INCREMENT), number_selection_menu(SIZE));
+            break;
+        case '3':
+            graph.getMaxFlow();
+            break;
+        case '4':
+            break;
+        case '5':
+            break;
+        default:
+            cout << "Invalid input" << endl;
+            break;
+            return;
+    }
 }
 
+int main() {
+    vector<Graph> graphs;
+
+    for (int i = 1; i <= 10; i++) {
+        ostringstream filename;
+        filename << setfill('0') << setw(2) << i;
+        graphs.push_back(createGraphFromFile("../Tests_B/in" + filename.str() + "_b.txt"));
+    }
+    graphs.push_back(createGraphFromFile("../Tests_B/intSlide3.txt"));
+
+    max_capacity_min_transbordo(graphs[9-1]);
+}
+/*
 int main() {
     vector<Graph> graphs;
 
@@ -163,7 +195,7 @@ int main() {
         filename << setfill('0') << setw(2) << i;
         graphs.push_back(createGraphFromFile("../Tests_B/in" + filename.str() + "_b.txt"));
     }
-    graphs.push_back(createGraphFromFile("../Tests_B/intSlide1.txt"));
+    graphs.push_back(createGraphFromFile("../Tests_B/intSlide3.txt"));
     char input;
     do {
         cout << "Choose which task to run (1 or 2, 0 to exit): ";
@@ -189,3 +221,4 @@ int main() {
     } while (true);
     return 0;
 }
+*/

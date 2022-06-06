@@ -90,47 +90,32 @@ CMakeFiles/Da_T2.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Da_T2.dir/main.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Manel/Documents/GitHub/Da_T2/main.cpp -o CMakeFiles/Da_T2.dir/main.cpp.s
 
-CMakeFiles/Da_T2.dir/Graph.cpp.o: CMakeFiles/Da_T2.dir/flags.make
-CMakeFiles/Da_T2.dir/Graph.cpp.o: ../Graph.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Manel/Documents/GitHub/Da_T2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Da_T2.dir/Graph.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Da_T2.dir/Graph.cpp.o -c /Users/Manel/Documents/GitHub/Da_T2/Graph.cpp
+CMakeFiles/Da_T2.dir/graph.cpp.o: CMakeFiles/Da_T2.dir/flags.make
+CMakeFiles/Da_T2.dir/graph.cpp.o: ../graph.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Manel/Documents/GitHub/Da_T2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Da_T2.dir/graph.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Da_T2.dir/graph.cpp.o -c /Users/Manel/Documents/GitHub/Da_T2/graph.cpp
 
-CMakeFiles/Da_T2.dir/Graph.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Da_T2.dir/Graph.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Manel/Documents/GitHub/Da_T2/Graph.cpp > CMakeFiles/Da_T2.dir/Graph.cpp.i
+CMakeFiles/Da_T2.dir/graph.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Da_T2.dir/graph.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Manel/Documents/GitHub/Da_T2/graph.cpp > CMakeFiles/Da_T2.dir/graph.cpp.i
 
-CMakeFiles/Da_T2.dir/Graph.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Da_T2.dir/Graph.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Manel/Documents/GitHub/Da_T2/Graph.cpp -o CMakeFiles/Da_T2.dir/Graph.cpp.s
-
-CMakeFiles/Da_T2.dir/LoadData.cpp.o: CMakeFiles/Da_T2.dir/flags.make
-CMakeFiles/Da_T2.dir/LoadData.cpp.o: ../LoadData.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/Manel/Documents/GitHub/Da_T2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Da_T2.dir/LoadData.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Da_T2.dir/LoadData.cpp.o -c /Users/Manel/Documents/GitHub/Da_T2/LoadData.cpp
-
-CMakeFiles/Da_T2.dir/LoadData.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Da_T2.dir/LoadData.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/Manel/Documents/GitHub/Da_T2/LoadData.cpp > CMakeFiles/Da_T2.dir/LoadData.cpp.i
-
-CMakeFiles/Da_T2.dir/LoadData.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Da_T2.dir/LoadData.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Manel/Documents/GitHub/Da_T2/LoadData.cpp -o CMakeFiles/Da_T2.dir/LoadData.cpp.s
+CMakeFiles/Da_T2.dir/graph.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Da_T2.dir/graph.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/Manel/Documents/GitHub/Da_T2/graph.cpp -o CMakeFiles/Da_T2.dir/graph.cpp.s
 
 # Object files for target Da_T2
 Da_T2_OBJECTS = \
 "CMakeFiles/Da_T2.dir/main.cpp.o" \
-"CMakeFiles/Da_T2.dir/Graph.cpp.o" \
-"CMakeFiles/Da_T2.dir/LoadData.cpp.o"
+"CMakeFiles/Da_T2.dir/graph.cpp.o"
 
 # External object files for target Da_T2
 Da_T2_EXTERNAL_OBJECTS =
 
 Da_T2: CMakeFiles/Da_T2.dir/main.cpp.o
-Da_T2: CMakeFiles/Da_T2.dir/Graph.cpp.o
-Da_T2: CMakeFiles/Da_T2.dir/LoadData.cpp.o
+Da_T2: CMakeFiles/Da_T2.dir/graph.cpp.o
 Da_T2: CMakeFiles/Da_T2.dir/build.make
 Da_T2: CMakeFiles/Da_T2.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/Manel/Documents/GitHub/Da_T2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Da_T2"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/Manel/Documents/GitHub/Da_T2/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable Da_T2"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Da_T2.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
