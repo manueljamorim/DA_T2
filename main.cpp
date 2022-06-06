@@ -97,9 +97,10 @@ void task2_menu(Graph graph) {
         graph.printOutput();
         break;
     case '4':
-        graph.task2_4solver();
+        cout << "The group will be reunited after " << graph.task2_4solver() << " time units" << '\n';
         break;
     case '5':
+        graph.task2_5solver();
         break;
     default:
         cout << "Invalid input" << endl;

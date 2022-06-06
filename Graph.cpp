@@ -416,18 +416,18 @@ void Graph::printChanges(Graph graph1, Graph graph2) {
 // ------------------------------------------------------
 // ----------------- Task 3 Functions -------------------
 
-double Graph::task2_4solver(){
+double Graph::task2_4solver(){ //
 
-    double res=0;
-    int DurMin;
 
-    getMaxFlow();
+    double DurMin;
 
-    Graph aux_g = createGraphFromOutput();
+    solve(); // gera ficheiro com os encaminhamentos
+
+    Graph aux_g = createGraphFromOutput(); // cria grafo a partir de um ficheiro
 
     stack<int> S;
 
-    for(int i = 0 ; i < aux_g.n; i++){
+    for(int i = 1 ; i <= aux_g.n; i++){ // iniciar EarliestStart e GrauE a 0 e dá reset aos pais
         aux_g.nodes[i].es = 0;
         aux_g.nodes[i].parent = -1;
         aux_g.nodes[i].grauE = 0;
@@ -435,23 +435,31 @@ double Graph::task2_4solver(){
 
 
 
-    for(int i = 0 ; i < aux_g.n; i++) {
+    for(int i = 1 ; i <= aux_g.n; i++) {
         for (int k = 0; k < aux_g.nodes[i].adj.size(); k++) {
             aux_g.nodes[nodes[i].adj[k].dest].grauE = aux_g.nodes[nodes[i].adj[k].dest].grauE + 1;
+
         }
     }
 
-    for(int i=0; i < aux_g.n ; i++){
-        if(aux_g.nodes[i].grauE == 0){S.push(i);}
+    for(int i=1; i <= aux_g.n ; i++){
+        if(aux_g.nodes[i].grauE == 0){
+            S.push(i);
+        }
     }
+
+
+
     DurMin = -1;
     int vf = -1; //null
     int v;
 
 
-    while(S.size() != 0){
+    while(!S.empty()){
         v = S.top();
+
         S.pop();
+
             if( DurMin < aux_g.nodes[v].es){
                 DurMin = aux_g.nodes[v].es;
                 vf = v;
@@ -459,16 +467,125 @@ double Graph::task2_4solver(){
 
         for(Edge& e : aux_g.nodes[v].adj) {
             int w = e.dest;
+
+
             if(aux_g.nodes[w].es < (aux_g.nodes[v].es + e.duration)){
                 aux_g.nodes[w].es = aux_g.nodes[v].es + e.duration;
                 aux_g.nodes[w].parent = v;
             }
 
-            aux_g.nodes[w].grauE = aux_g.nodes[w].grauE - 1;
-            if(aux_g.nodes[w].grauE == 0){S.push(w);}
+
+                aux_g.nodes[w].grauE = aux_g.nodes[w].grauE - 1;
+                if(aux_g.nodes[w].grauE == 0){
+                    S.push(w);
+                }
         }
     }
-    cout << DurMin;
+
+
+    return  DurMin;
+}
+
+void Graph::task2_5solver() {
+
+    double DurMin;
+
+    solve(); // gera ficheiro com os encaminhamentos
+
+    Graph aux_g = createGraphFromOutput(); // cria grafo a partir de um ficheiro
+
+    stack<int> S;
+
+    for(int i = 1 ; i <= aux_g.n; i++){ // iniciar EarliestStart e GrauE a 0 e dá reset aos pais
+        aux_g.nodes[i].es = 0;
+        aux_g.nodes[i].parent = -1;
+        aux_g.nodes[i].grauE = 0;
+    }
+
+
+
+    for(int i = 1 ; i <= aux_g.n; i++) {
+        for (int k = 0; k < aux_g.nodes[i].adj.size(); k++) {
+            aux_g.nodes[nodes[i].adj[k].dest].grauE = aux_g.nodes[nodes[i].adj[k].dest].grauE + 1;
+
+        }
+    }
+
+    for(int i=1; i <= aux_g.n ; i++){
+        if(aux_g.nodes[i].grauE == 0){
+            S.push(i);
+        }
+    }
+
+
+
+    DurMin = -1;
+    int vf = -1; //null
+    int v;
+
+
+    while(!S.empty()){
+        v = S.top();
+
+        S.pop();
+
+        if( DurMin < aux_g.nodes[v].es){
+            DurMin = aux_g.nodes[v].es;
+            vf = v;
+        }
+
+        for(Edge& e : aux_g.nodes[v].adj) {
+            int w = e.dest;
+
+
+            if(aux_g.nodes[w].es < (aux_g.nodes[v].es + e.duration)){
+                aux_g.nodes[w].es = aux_g.nodes[v].es + e.duration;
+                aux_g.nodes[w].parent = v;
+            }
+
+
+            aux_g.nodes[w].grauE = aux_g.nodes[w].grauE - 1;
+            if(aux_g.nodes[w].grauE == 0){
+                S.push(w);
+            }
+        }
+    }
+
+    int aux = INT_MAX;
+
+
+
+   for(int i=1; i <= aux_g.n ;i++ ){
+       for(int k=0; k < aux_g.nodes[i].adj.size();k++){
+
+           aux_g.nodes[i].adj[k].fl = aux_g.nodes[aux_g.nodes[i].adj[k].dest].es - (aux_g.nodes[i].es + aux_g.nodes[i].adj[k].duration) ;
+
+       }
+   }
+
+
+    for(int i=1; i <= aux_g.n ;i++ ){
+        for(int k=0; k < aux_g.nodes[i].adj.size();k++){
+            cout << "Folga livre: " << aux_g.nodes[i].adj[k].fl << "\n";
+        }
+    }
+
+    for(size_t i=1; i <= aux_g.n; i++){
+
+        for(Edge e : aux_g.nodes[i].adj){
+            if(e.fl <= aux){
+                aux = e.fl;
+            }
+
+        }
+
+        if(aux > 0 && aux != INT_MAX){
+            cout << "No: " << i << " com FL " << aux << '\n' ;
+        }
+
+        aux = INT_MAX;
+    }
+
 }
 
 

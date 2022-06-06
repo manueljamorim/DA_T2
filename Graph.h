@@ -1,5 +1,8 @@
 #include <list>
 #include <vector>
+#include <climits>
+#include <limits>
+#include "limits.h"
 
 
 using namespace std;
@@ -12,6 +15,8 @@ private:
         int capacity; // Capacity of the vehicle
         int duration; // Duration of the travel
         int flow; // Flow going through the edge
+        int fl; //folga livre
+
     };
 
     struct Node {
@@ -22,7 +27,8 @@ private:
         int dist;
         int cap;
         int es; //earliest start
-        int grauE;
+        int grauE; //nº de arestas que têm nó n como destino
+
         vector<int> pred_v;
     };
 
@@ -88,6 +94,8 @@ public:
 
 
     double task2_4solver();
+    void task2_5solver();
+
 };
 
 
