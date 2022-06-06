@@ -11,6 +11,7 @@
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : s(1), t(num), n(num), hasDir(dir), nodes(num+1) {}
 
+
 Graph createGraphFromFile(string filename) {
     string line;
 
@@ -73,14 +74,18 @@ Graph createGraphFromOutput() {
 // Add edge from source to destination with a certain weight
 void Graph::addEdge(int src, int dest, int capacity, int duration, int flow, bool fromOutput) {
     if (src<1 || src>n || dest<1 || dest>n) return;
+
+    // If we're adding edges to the resulting graph from the Edmonds-Karp algorithm...
     if(fromOutput) {
         for(Edge& edge : this->nodes[src].adj) {
+            // If the edge already exists, update its flow value
             if(edge.src == src && edge.dest == dest) {
                 edge.flow = flow;
                 return;
             }
         }
         for(Edge& edge : this->nodes[dest].adj) {
+            // If we're trying to add a residual edge, instead update the flow value of the corresponding real edge
             if(edge.dest == src && edge.src == dest) {
                 edge.flow = -flow;
                 return;
@@ -259,17 +264,21 @@ bool Graph::solve(int maxSize) {
     int flow;
     ofstream output("../Tests_B/output.txt");
 
+    // Continously calculate new augmenting paths until no more can be determined or the flow has reached 'maxSize'
     do {
+        // Reset before each iteration
         for(int v = 1; v <= n; v++) {
             nodes[v].visited = false;
             nodes[v].parent = INT_MAX;
         }
+
         flow = bfs(output, maxSize);
         maxFlow += flow;
     } while(flow != 0 && maxSize > 0);
 
     output.close();
 
+    // If 'maxSize' is still greater than 0 after the maxFlow has been determined, then no path could be found for the original value of 'maxSize'
     if(maxSize > 0)
         return false;
 
@@ -280,10 +289,6 @@ int Graph::remainingCapacity(Edge e) {
     return e.capacity - e.flow;
 }
 
-bool Graph::isResidual(Edge e) {
-    return e.capacity == 0;
-}
-
 void Graph::augmentEdge(Edge& e, int limit) {
     e.flow += limit;
 }
@@ -292,6 +297,8 @@ int Graph::bfs(ofstream& output, int& maxSize) {
     queue<int> q;
     q.push(s);
     nodes[s].visited = true;
+
+    // BFS part, iterating over all nodes
     while(!q.empty()) {
         int u = q.front();
         q.pop();
@@ -306,9 +313,10 @@ int Graph::bfs(ofstream& output, int& maxSize) {
         }
     }
 
+    // If the sink node hasn't been visited, exit prematurely
     if(!nodes[t].visited) return 0;
 
-    // Retrieve path nodes and edges traversed and write to output file
+    // Retrieve the edges traversed
     vector<Edge> edge_path;
     int num_nodes = 1;
     for(int i = t; i != s; i = nodes[i].parent) {
@@ -323,11 +331,13 @@ int Graph::bfs(ofstream& output, int& maxSize) {
         }
     }
 
+    // Calculate the minimal residual capacity of the augmenting path
     int limit = INT_MAX / 2;
     for(Edge edge : edge_path) {
         limit = min(limit, remainingCapacity(edge));
     }
 
+    // If 'maxSize' was specified, decrease it by the calculated flow value (=limit)
     if(maxSize != INT_MAX) {
         if(limit >= maxSize)
             limit = maxSize;
@@ -337,6 +347,7 @@ int Graph::bfs(ofstream& output, int& maxSize) {
             maxSize = 0;
     }
 
+    // Augment the flow in all the edges of the augmenting path, including residual edges
     for(Edge edge : edge_path) {
         augmentEdge(edge, limit);
         for(int i = 0; i < nodes[edge.src].adj.size(); i++) {
@@ -352,7 +363,7 @@ int Graph::bfs(ofstream& output, int& maxSize) {
 
     }
 
-    
+    // Write to the output file
     output << t << " " << num_nodes - 1 << endl;
     for(int i = t; i != s; i = nodes[i].parent) {
         for(Edge e : nodes[nodes[i].parent].adj) {
@@ -366,14 +377,17 @@ int Graph::bfs(ofstream& output, int& maxSize) {
 }
 
 void Graph::printOutput() {
+    // Create graph composed of all calculated paths from the bfs
     Graph graph = createGraphFromOutput();
 
+    // Reset visited flag for all nodes
     for(int v = 1; v <= graph.n; v++) graph.nodes[v].visited = false;
 
     queue<int> q;
     q.push(graph.s);
     nodes[graph.s].visited = true;
 
+    // Iterate over all nodes
     cout << "Starting from node 1 with a group of " << maxFlow << endl;
     while(!q.empty()) {
         int u = q.front();
@@ -395,22 +409,30 @@ void Graph::printChanges(Graph graph1, Graph graph2) {
     q.push(graph2.s);
     nodes[graph2.s].visited = true;
 
+    // Flag to check whether two edges are the same from the different graph
     bool matched = false;
+
+    // Iterate over all nodes from both graphs
     while(!q.empty()) {
         int u = q.front();
         q.pop();
+
+        // Iterate over all adjacent edges from the same node in both graphs
         for(Edge& e2 : graph2.nodes[u].adj) {
             for(Edge& e1 : graph1.nodes[u].adj) {
                 if(e1.src == e2.src && e1.dest == e2.dest) {
                     matched = true;
+                    // Unchanged if the edges are the same and the flow value are the same as well
                     if(e1.flow == e2.flow) {
                         cout << "Unchanged  -- " << "Node " << e1.src << " to " << e1.dest << " group size " << e1.flow << endl;
                     }
+                    // Changed if the edges are the same but their flow values differ
                     else {
                         cout << "Changed    -- " << "Node " << e1.src << " to " << e1.dest << " group size changed from " << e1.flow << " to " << e2.flow << endl;
                     }
                 }
             }
+            // New edge added if there's no corresponding edge in the other graph
             if(!matched)
                 cout << "Added      -- " << "Node " << e2.src << " to " << e2.dest << " group size " << e2.flow << endl;
             matched = false;

@@ -137,8 +137,8 @@ void task2_menu(Graph graph) {
         case '0':
             return;
         case '1':
-            graph.calculatePathForGroup(number_selection_menu(SIZE));
-            graph.printOutput();
+            if(graph.calculatePathForGroup(number_selection_menu(SIZE)))
+                graph.printOutput();
             break;
         case '2':
             graph.calculatePathsForGroupIncrease(number_selection_menu(INCREMENT), number_selection_menu(SIZE));
