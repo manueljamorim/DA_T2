@@ -564,11 +564,7 @@ void Graph::task2_5solver() {
    }
 
 
-    for(int i=1; i <= aux_g.n ;i++ ){
-        for(int k=0; k < aux_g.nodes[i].adj.size();k++){
-            cout << "Folga livre: " << aux_g.nodes[i].adj[k].fl << "\n";
-        }
-    }
+
 
     for(size_t i=1; i <= aux_g.n; i++){
 
